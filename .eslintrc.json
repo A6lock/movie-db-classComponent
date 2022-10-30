@@ -30,14 +30,22 @@
     "import/order": [
       2,
       {
-        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
         "newlines-between": "always"
       }
     ],
     "react/jsx-uses-react": ["off"],
     "react/jsx-props-no-spreading": ["off"],
     "no-shadow": "off",
-    "react/static-property-placement": ["off"]
+    "react/static-property-placement": ["off"],
+    "no-underscore-dangle": 0
   },
   "settings": {
     "import/resolver": {

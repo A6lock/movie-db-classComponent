@@ -1,5 +1,7 @@
-import './App.scss';
+import MovieListItems from '../movieListItems/movieListItems';
 
-function App() {}
+import './app.css';
 
-export default App;
+export default function App() {
+  return <MovieListItems />;
+}

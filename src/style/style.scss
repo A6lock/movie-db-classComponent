@@ -1,0 +1,21 @@
+@import './fonts.scss';
+@import './variables.scss';
+@import '../../node_modules/normalize.css/normalize.css';
+
+html,
+body {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
