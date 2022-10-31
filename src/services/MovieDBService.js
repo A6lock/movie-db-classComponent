@@ -1,9 +1,10 @@
-export default class MovieDBService {
+export default class MovieDbService {
   _apiBase = 'https://api.themoviedb.org/3/';
 
   _apiKey = 'api_key=cf39818bffaaad23abda4aada5ecc8bc';
 
-  static getResource = async (url) => {
+  // eslint-disable-next-line class-methods-use-this
+  getResource = async (url) => {
     const res = await fetch(url);
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status: ${res.status}`);
