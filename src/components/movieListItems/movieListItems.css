@@ -1,0 +1,8 @@
+.moveie-list-items {
+  background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 36px 37px;
+  margin: 0px;
+  padding: 0px 0px 0px 20px;
+}

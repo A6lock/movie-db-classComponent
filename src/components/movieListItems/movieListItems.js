@@ -8,6 +8,8 @@ import { Component } from 'react';
 
 import MovieListItem from '../movieListItem/MovieListItem';
 
+import './movieListItems.css';
+
 export default class MovieListItems extends Component {
   // movieDbService = new MovieDbService();
   state = {
@@ -34,17 +36,18 @@ export default class MovieListItems extends Component {
     const { data } = this.state;
 
     const visibleData = data.map((item) => {
-      const { id, original_title, release_date, overview } = item;
+      const { id, original_title, release_date, overview, poster_path } = item;
       return (
         <MovieListItem
           key={id}
           tittle={original_title}
           filmDate={release_date}
           description={overview}
+          poster={poster_path}
         />
       );
     });
 
-    return <ul>{visibleData}</ul>;
+    return <ul className="moveie-list-items">{visibleData}</ul>;
   }
 }
