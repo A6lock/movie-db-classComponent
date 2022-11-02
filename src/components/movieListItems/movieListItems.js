@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable react/state-in-constructor */
@@ -7,6 +9,7 @@ import { Component } from 'react';
 // import MovieDbService from '../../services/MovieDbService';
 
 import MovieListItem from '../movieListItem/MovieListItem';
+import Spiner from '../spiner/Spiner';
 
 import './movieListItems.css';
 
@@ -16,7 +19,7 @@ export default class MovieListItems extends Component {
     // eslint-disable-next-line react/no-unused-state
     data: [],
     // eslint-disable-next-line react/no-unused-state
-    load: true,
+    loading: true,
   };
 
   componentDidMount() {
@@ -29,11 +32,14 @@ export default class MovieListItems extends Component {
     );
     const res = await response.json();
     // eslint-disable-next-line react/no-unused-state
-    this.setState({ data: res.results });
+    this.setState({
+      data: res.results,
+      loading: false,
+    });
   };
 
   render() {
-    const { data } = this.state;
+    const { data, loading } = this.state;
 
     const visibleData = data.map((item) => {
       const { id, original_title, release_date, overview, poster_path } = item;
@@ -48,6 +54,8 @@ export default class MovieListItems extends Component {
       );
     });
 
-    return <ul className="moveie-list-items">{visibleData}</ul>;
+    const ulStyle = loading ? 'moveie-list-items--center' : 'moveie-list-items';
+
+    return <ul className={ulStyle}>{loading ? <Spiner /> : visibleData}</ul>;
   }
 }
