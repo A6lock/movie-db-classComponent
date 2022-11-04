@@ -1,4 +1,4 @@
-import MovieListItems from '../movieListItems/movieListItems';
+import MovieListItems from '../movieListItems/MovieListItems';
 
 import './app.css';
 

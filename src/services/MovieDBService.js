@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 export default class MovieDbService {
   _apiBase = 'https://api.themoviedb.org/3/';
 
@@ -9,7 +10,7 @@ export default class MovieDbService {
     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status: ${res.status}`);
     }
-    await res.json();
+    return await res.json();
   };
 
   getFilm = async () => {
