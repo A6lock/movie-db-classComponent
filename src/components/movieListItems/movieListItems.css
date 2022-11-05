@@ -1,4 +1,4 @@
-.moveie-list-items {
+/*.moveie-list-items {
   background-color: #fff;
   display: flex;
   min-height: 100vh;
@@ -6,6 +6,15 @@
   gap: 36px 37px;
   margin: 0px;
   padding: 0px 20px;
+}*/
+
+.moveie-list-items {
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  grid-column-gap: 51px;
+  grid-row-gap: 37px;
+  /*gap: 36px 37px;*/
 }
 
 .moveie-list-items--loading {

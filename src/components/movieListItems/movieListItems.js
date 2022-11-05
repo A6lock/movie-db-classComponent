@@ -46,7 +46,7 @@ export default class MovieListItems extends Component {
 
   searchFilmsByWord = () => {
     this.movieDbService
-      .getMoviesByWord('Tory')
+      .getMoviesByWord('The way back')
       .then(this.onFilmsLoaded)
       .catch(this.onError);
   };
@@ -63,7 +63,7 @@ export default class MovieListItems extends Component {
     const errorMessage = error ? (
       <Alert
         message="Error"
-        description="An error has occurred, we are working to fix it."
+        description="An error has occurred, we are working to fix it. Try again later."
         type="error"
         showIcon
         closable

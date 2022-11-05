@@ -1,5 +1,10 @@
-.app__container {
+.app {
   max-width: 1010px;
   min-height: 100vh;
+  margin: 0 auto;
+}
+
+.app__container {
+  width: 95%;
   margin: 0 auto;
 }
