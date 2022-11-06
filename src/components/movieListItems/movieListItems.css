@@ -17,9 +17,13 @@
   /*gap: 36px 37px;*/
 }
 
-.moveie-list-items--loading {
+.moveie-list-items--center {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.moveie-list-items--no-results {
+  margin: 0 auto;
 }

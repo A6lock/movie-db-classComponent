@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable indent */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
@@ -8,6 +9,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
 import { Alert } from 'antd';
+import { debounce } from 'lodash';
 
 import MovieDbService from '../../services/MovieDbService';
 import MovieListItem from '../movieListItem/MovieListItem';
@@ -27,14 +29,31 @@ export default class MovieListItems extends Component {
   };
 
   componentDidMount() {
-    this.searchFilmsByWord();
+    this.setState({ loading: false });
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.searchText !== prevProps.searchText) {
+      if (this.props.searchText.length > 0) {
+        this.searchFilmsByWord(`${this.props.searchText}`);
+      }
+      if (!this.props.searchText) this.clearData();
+    }
+  }
+
+  clearData = () => {
+    this.setState({ data: [] });
+  };
 
   onFilmsLoaded = (filmsData) => {
     this.setState({
       data: filmsData.results,
       loading: false,
     });
+  };
+
+  onLoad = () => {
+    this.setState(() => ({ loading: true }));
   };
 
   onError = () => {
@@ -44,20 +63,25 @@ export default class MovieListItems extends Component {
     });
   };
 
-  searchFilmsByWord = () => {
-    this.movieDbService
-      .getMoviesByWord('The way back')
-      .then(this.onFilmsLoaded)
-      .catch(this.onError);
-  };
+  // eslint-disable-next-line react/sort-comp
+  searchFilmsByWord = debounce((searchText) => {
+    if (this.props.searchText.length) {
+      this.onLoad();
+      this.movieDbService
+        .getMoviesByWord(searchText)
+        .then(this.onFilmsLoaded)
+        .catch(this.onError);
+    }
+  }, 1000);
 
   render() {
     const { loading, error, data } = this.state;
+    const { searchText } = this.props;
 
     const ulStyle = loading
-      ? 'moveie-list-items--loading '
+      ? 'moveie-list-items--center '
       : error
-      ? 'moveie-list-items--error'
+      ? 'moveie-list-items--center'
       : 'moveie-list-items';
 
     const errorMessage = error ? (
@@ -71,7 +95,13 @@ export default class MovieListItems extends Component {
     ) : null;
 
     const spinner = loading ? <Spiner /> : null;
-    const viewContent = !loading && !error ? <ItemsView data={data} /> : null;
+    const viewData =
+      searchText.length === 0 || !data.length ? (
+        <NoResult />
+      ) : (
+        <ItemsView data={data} />
+      );
+    const viewContent = !loading && !error ? viewData : null;
 
     return (
       <ul className={ulStyle}>
@@ -99,3 +129,11 @@ const ItemsView = ({ data }) => {
 
   return visibleData;
 };
+
+function NoResult() {
+  return (
+    <h1 className="moveie-list-items--no-results">
+      The search has not given any results. Try another request.
+    </h1>
+  );
+}
