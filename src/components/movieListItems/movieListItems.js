@@ -8,7 +8,7 @@
 /* eslint-disable react/state-in-constructor */
 /* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
-import { Alert } from 'antd';
+import { Alert, Pagination } from 'antd';
 import { debounce } from 'lodash';
 
 import MovieDbService from '../../services/MovieDbService';
@@ -26,6 +26,8 @@ export default class MovieListItems extends Component {
     // eslint-disable-next-line react/no-unused-state
     loading: true,
     error: false,
+    totalPages: 0,
+    page: 1,
   };
 
   componentDidMount() {
@@ -33,7 +35,7 @@ export default class MovieListItems extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.searchText !== prevProps.searchText) {
+    if (this.props !== prevProps || prevState.page !== this.state.page) {
       if (this.props.searchText.length > 0) {
         this.searchFilmsByWord(`${this.props.searchText}`);
       }
@@ -49,6 +51,8 @@ export default class MovieListItems extends Component {
     this.setState({
       data: filmsData.results,
       loading: false,
+      error: false,
+      totalPages: filmsData.total_pages,
     });
   };
 
@@ -65,14 +69,17 @@ export default class MovieListItems extends Component {
 
   // eslint-disable-next-line react/sort-comp
   searchFilmsByWord = debounce((searchText) => {
+    const { page } = this.state;
     if (this.props.searchText.length) {
       this.onLoad();
       this.movieDbService
-        .getMoviesByWord(searchText)
+        .getMoviesByWord(searchText, page)
         .then(this.onFilmsLoaded)
         .catch(this.onError);
     }
   }, 1000);
+
+  pageChange = (page) => this.setState({ page });
 
   render() {
     const { loading, error, data } = this.state;
@@ -81,7 +88,7 @@ export default class MovieListItems extends Component {
     const ulStyle = loading
       ? 'moveie-list-items--center '
       : error
-      ? 'moveie-list-items--center'
+      ? 'moveie-list-items--error'
       : 'moveie-list-items';
 
     const errorMessage = error ? (
@@ -95,24 +102,35 @@ export default class MovieListItems extends Component {
     ) : null;
 
     const spinner = loading ? <Spiner /> : null;
-    const viewData =
-      searchText.length === 0 || !data.length ? (
-        <NoResult />
-      ) : (
-        <ItemsView data={data} />
-      );
-    const viewContent = !loading && !error ? viewData : null;
+    const viewContent = !loading && !error ? <ItemsView data={data} /> : null;
+    const pagination = data.length ? (
+      <Pagination
+        defaultCurrent={1}
+        size="small"
+        pageSize={20}
+        showSizeChanger={false}
+        total={this.state.totalPages * data.length - 1}
+        onChange={this.pageChange}
+      />
+    ) : null;
+
+    // const noResults = !data.length ? <NoResult /> : null;
 
     return (
-      <ul className={ulStyle}>
-        {errorMessage}
-        {spinner}
-        {viewContent}
-      </ul>
+      <>
+        {/* {noResults} */}
+        <ul className={ulStyle}>
+          {errorMessage}
+          {viewContent}
+          {spinner}
+        </ul>
+        {pagination}
+      </>
     );
   }
 }
 
+// eslint-disable-next-line react/function-component-definition
 const ItemsView = ({ data }) => {
   const visibleData = data.map((item) => {
     const { id, original_title, release_date, overview, poster_path } = item;
@@ -131,9 +149,5 @@ const ItemsView = ({ data }) => {
 };
 
 function NoResult() {
-  return (
-    <h1 className="moveie-list-items--no-results">
-      The search has not given any results. Try another request.
-    </h1>
-  );
+  return <h1>The search has not given any results. Try another request.</h1>;
 }

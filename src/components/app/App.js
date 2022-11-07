@@ -20,6 +20,7 @@ export default class App extends Component {
 
   render() {
     const { searchText } = this.state;
+
     return (
       <div className="app">
         <div className="app__container">

@@ -13,9 +13,9 @@ export default class MovieDbService {
     return await res.json();
   };
 
-  getMoviesByWord = async (word) => {
+  getMoviesByWord = async (word, page) => {
     return this.getResource(
-      `${this._apiBase}search/movie?${this._apiKey}&language=en-US&query=${word}&page=1&include_adult=false`
+      `${this._apiBase}search/movie?${this._apiKey}&language=en-US&query=${word}&page=${page}&include_adult=false`
     );
   };
 }
