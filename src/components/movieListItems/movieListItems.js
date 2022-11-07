@@ -77,7 +77,7 @@ export default class MovieListItems extends Component {
         .then(this.onFilmsLoaded)
         .catch(this.onError);
     }
-  }, 1000);
+  }, 500);
 
   pageChange = (page) => this.setState({ page });
 
