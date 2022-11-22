@@ -1,39 +1,71 @@
 import { Component } from 'react';
-import { Input } from 'antd';
 
+import SearchPannel from '../searchPannel/SearchPannel';
 import OfflineMessage from '../offlineMessage/OfflineMessage';
-import MovieListItems from '../movieListItems/MovieListItems';
+import Main from '../main/Main';
+import Navigation from '../navigation/Navigation';
+import MovieDbService from '../../services/MovieDbService';
+import { MovieProvider } from '../movieDbContext/movieDbContext';
 
 import './app.css';
-import './input.css';
 
 export default class App extends Component {
+  movieDbService = new MovieDbService();
+
   // eslint-disable-next-line react/state-in-constructor
   state = {
-    searchText: '',
+    request: '',
+    navType: 'Search',
+    genres: null,
   };
 
-  // eslint-disable-next-line class-methods-use-this
-  onSearchFilms = (event) => {
-    this.setState({ searchText: event.target.value });
+  componentDidMount() {
+    this.getGenres();
+  }
+
+  onSearchFilms = (request) => {
+    this.setState({ request });
+  };
+
+  onChangeNavType = (value) => {
+    this.setState({ navType: value });
+  };
+
+  genresLoaded = (response) => {
+    this.setState({ genres: response.genres });
+  };
+
+  getGenres = () => {
+    this.movieDbService.getGeners().then(this.genresLoaded);
   };
 
   render() {
-    const { searchText } = this.state;
+    const { request, navType, genres } = this.state;
 
-    return (
-      <div className="app">
-        <div className="app__container">
-          <OfflineMessage />
-          <Input
-            placeholder="Type to search"
-            type="search"
-            value={searchText}
-            onChange={this.onSearchFilms}
-          />
-          <MovieListItems searchText={searchText} />
+    // if (!request) this.clearData();
+
+    const visibleData =
+      navType === 'Search' ? (
+        <div className="app">
+          <div className="app__container">
+            <OfflineMessage />
+            <MovieProvider value={genres}>
+              <Navigation onChangeNavType={this.onChangeNavType} />
+              <SearchPannel onSearchFilms={this.onSearchFilms} />
+              <Main request={request} />
+            </MovieProvider>
+          </div>
         </div>
-      </div>
-    );
+      ) : (
+        <div className="app">
+          <div className="app__container">
+            <OfflineMessage />
+            <Navigation onChangeNavType={this.onChangeNavType} />
+            <Main request={request} />
+          </div>
+        </div>
+      );
+
+    return { ...visibleData };
   }
 }

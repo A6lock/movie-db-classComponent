@@ -2,8 +2,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
+import { format, parseISO } from 'date-fns';
 
-import erroePicture from './noPoster.png';
+import Genres from '../genres/Genres';
+
+import errorPicture from './noPoster.png';
 
 import './movieListItem.css';
 
@@ -22,11 +25,11 @@ export default class MovieListItem extends Component {
   };
 
   render() {
-    const { tittle, filmDate, description, poster } = this.props;
+    const { tittle, filmDate, description, poster, genres } = this.props;
 
     const posterView = poster
       ? `https://image.tmdb.org/t/p/w500/${poster}`
-      : erroePicture;
+      : errorPicture;
 
     const defaultDescription =
       description || 'Sorry, here is no description for the film.';
@@ -37,8 +40,10 @@ export default class MovieListItem extends Component {
           <img className="movie-item__poster" src={posterView} alt={tittle} />
           <div className="movie-item__body">
             <h3 className="movie-item__tittle">{tittle}</h3>
-            <span className="movie-item__date">{filmDate}</span>
-            <div className="movie-item__genre">жанры</div>
+            <span className="movie-item__date">
+              {filmDate ? format(parseISO(filmDate), 'PP') : 'No date'}
+            </span>
+            <Genres genres={genres} />
             <p className="movie-item__description">
               {description.length > 170
                 ? `${this.slisingDescription()}...`
