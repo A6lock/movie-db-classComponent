@@ -1,9 +1,11 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable camelcase */
 import { Component } from 'react';
+import { Tabs } from 'antd';
 
 import SearchPannel from '../searchPannel/SearchPannel';
 import OfflineMessage from '../offlineMessage/OfflineMessage';
 import Main from '../main/Main';
-import Navigation from '../navigation/Navigation';
 import MovieDbService from '../../services/MovieDbService';
 import { MovieProvider } from '../movieDbContext/movieDbContext';
 
@@ -15,20 +17,17 @@ export default class App extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     request: '',
-    navType: 'Search',
     genres: null,
+    guestSessionId: null,
   };
 
   componentDidMount() {
     this.getGenres();
+    this.getSessionId();
   }
 
   onSearchFilms = (request) => {
     this.setState({ request });
-  };
-
-  onChangeNavType = (value) => {
-    this.setState({ navType: value });
   };
 
   genresLoaded = (response) => {
@@ -39,33 +38,44 @@ export default class App extends Component {
     this.movieDbService.getGeners().then(this.genresLoaded);
   };
 
+  sessionLoaded = (response) => {
+    this.setState({ guestSessionId: response.guest_session_id });
+  };
+
+  getSessionId = () => {
+    this.movieDbService.createGuestSessions().then(this.sessionLoaded);
+  };
+
   render() {
-    const { request, navType, genres } = this.state;
+    const { request, genres } = this.state;
 
-    // if (!request) this.clearData();
+    // console.log(guestSessionId);
 
-    const visibleData =
-      navType === 'Search' ? (
-        <div className="app">
-          <div className="app__container">
-            <OfflineMessage />
-            <MovieProvider value={genres}>
-              <Navigation onChangeNavType={this.onChangeNavType} />
-              <SearchPannel onSearchFilms={this.onSearchFilms} />
+    return (
+      <Tabs defaultActiveKey="1" centered>
+        <Tabs.TabPane tab="Search" key="1">
+          <div className="app">
+            <div className="app__container">
+              <OfflineMessage />
+              <MovieProvider value={genres}>
+                <Tabs />
+                {/* <Navigation onChangeNavType={this.onChangeNavType} /> */}
+                <SearchPannel onSearchFilms={this.onSearchFilms} />
+                <Main request={request} />
+              </MovieProvider>
+            </div>
+          </div>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Rate" key="2">
+          <div className="app">
+            <div className="app__container">
+              <OfflineMessage />
+              {/* <Navigation onChangeNavType={this.onChangeNavType} /> */}
               <Main request={request} />
-            </MovieProvider>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="app">
-          <div className="app__container">
-            <OfflineMessage />
-            <Navigation onChangeNavType={this.onChangeNavType} />
-            <Main request={request} />
-          </div>
-        </div>
-      );
-
-    return { ...visibleData };
+        </Tabs.TabPane>
+      </Tabs>
+    );
   }
 }

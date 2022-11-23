@@ -24,4 +24,10 @@ export default class MovieDbService {
       `${this._apiBase}search/movie?${this._apiKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`
     );
   };
+
+  createGuestSessions = async () => {
+    return this.getResource(
+      `${this._apiBase}authentication/guest_session/new?${this._apiKey}`
+    );
+  };
 }

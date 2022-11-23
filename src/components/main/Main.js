@@ -4,7 +4,7 @@ import { Component } from 'react';
 import { Pagination } from 'antd';
 import { debounce } from 'lodash';
 
-import MovieListItems from '../movieListItems/MovieListItems';
+import MovieListItems from '../movieListItems/movieListItems';
 import MovieDbService from '../../services/MovieDbService';
 
 export default class Main extends Component {
