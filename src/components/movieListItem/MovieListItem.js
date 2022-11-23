@@ -1,22 +1,44 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/state-in-constructor */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
 import { format, parseISO } from 'date-fns';
+import { Rate } from 'antd';
 
-import Genres from '../genres/Genres';
+import Ratind from '../rating/Rating';
 
+import Genres from './Genres';
 import errorPicture from './noPoster.png';
 
 import './movieListItem.css';
+import './rate.css';
 
 export default class MovieListItem extends Component {
+  state = {
+    starsCount: 0,
+  };
+
+  onChangeStarsCount = (starsCount) => {
+    this.setState({ starsCount });
+  };
+
   slisingDescription = () => {
-    const { description } = this.props;
+    const { description, tittle, genres } = this.props;
+
+    const maxSymbols =
+      tittle.length > 22 && genres.length > 3
+        ? 50
+        : tittle.length > 22
+        ? 80
+        : 140;
+
     return description
       .split(' ')
       .reduce((acc, item) => {
-        if (acc.join('').length > 140) return acc;
+        if (acc.join('').length > maxSymbols) return acc;
 
         acc.push(item);
         return acc;
@@ -25,7 +47,9 @@ export default class MovieListItem extends Component {
   };
 
   render() {
-    const { tittle, filmDate, description, poster, genres } = this.props;
+    const { starsCount } = this.state;
+    const { tittle, filmDate, description, poster, genres, rating } =
+      this.props;
 
     const posterView = poster
       ? `https://image.tmdb.org/t/p/w500/${poster}`
@@ -39,7 +63,10 @@ export default class MovieListItem extends Component {
         <div className="movie-item__container">
           <img className="movie-item__poster" src={posterView} alt={tittle} />
           <div className="movie-item__body">
-            <h3 className="movie-item__tittle">{tittle}</h3>
+            <div className="tittle">
+              <h3 className="movie-item__tittle">{tittle}</h3>
+              <Ratind value={rating} />
+            </div>
             <span className="movie-item__date">
               {filmDate ? format(parseISO(filmDate), 'PP') : 'No date'}
             </span>
@@ -49,6 +76,13 @@ export default class MovieListItem extends Component {
                 ? `${this.slisingDescription()}...`
                 : defaultDescription}
             </p>
+            <Rate
+              count={10}
+              allowHalf="true"
+              className="rate-style"
+              value={starsCount}
+              onChange={this.onChangeStarsCount}
+            />
           </div>
         </div>
       </li>

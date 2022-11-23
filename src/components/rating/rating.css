@@ -1,0 +1,15 @@
+.rating{
+  width: 30px;
+  height: 30px;
+  border: 2px solid #E9D100;
+  padding: 6px;
+  border-radius: 50%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

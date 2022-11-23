@@ -1,9 +1,8 @@
 /* eslint-disable react/no-unused-state */
 /* eslint-disable camelcase */
 import { Component } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, Input } from 'antd';
 
-import SearchPannel from '../searchPannel/SearchPannel';
 import OfflineMessage from '../offlineMessage/OfflineMessage';
 import Main from '../main/Main';
 import MovieDbService from '../../services/MovieDbService';
@@ -26,8 +25,8 @@ export default class App extends Component {
     this.getSessionId();
   }
 
-  onSearchFilms = (request) => {
-    this.setState({ request });
+  onChangeRequest = (event) => {
+    this.setState({ request: event.target.value });
   };
 
   genresLoaded = (response) => {
@@ -59,8 +58,12 @@ export default class App extends Component {
               <OfflineMessage />
               <MovieProvider value={genres}>
                 <Tabs />
-                {/* <Navigation onChangeNavType={this.onChangeNavType} /> */}
-                <SearchPannel onSearchFilms={this.onSearchFilms} />
+                <Input
+                  placeholder="Type to search"
+                  type="search"
+                  value={request}
+                  onChange={this.onChangeRequest}
+                />
                 <Main request={request} />
               </MovieProvider>
             </div>
@@ -70,7 +73,6 @@ export default class App extends Component {
           <div className="app">
             <div className="app__container">
               <OfflineMessage />
-              {/* <Navigation onChangeNavType={this.onChangeNavType} /> */}
               <Main request={request} />
             </div>
           </div>

@@ -27,15 +27,23 @@
 }
 
 .movie-item__body {
-  margin-top: 10px;
+  margin: 10px 5px;
   display: flex;
   flex-direction: column;
   row-gap: 7px;
+  flex: 1 1 auto;
+}
+
+.tittle {
+  display: flex;
+  justify-content: space-between;
+  flex-basis: content;
 }
 
 .movie-item__tittle {
   margin: 0;
   padding: 0;
+  max-width: 210px;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -63,8 +71,9 @@
   font-size: 12px;
   line-height: 22px;
   max-width: 228px;
-  max-height: 128px;
+  max-height: max-content;
   overflow: hidden;
+  flex: 1 0 auto;
 }
 
 .genres__list {

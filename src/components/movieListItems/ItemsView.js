@@ -16,6 +16,7 @@ export default class ItemsView extends Component {
         overview,
         poster_path,
         genre_ids,
+        vote_average,
       } = item;
 
       const genres = genre_ids.reduce((acc, id) => {
@@ -32,6 +33,7 @@ export default class ItemsView extends Component {
           description={overview}
           poster={poster_path}
           genres={genres}
+          rating={vote_average}
         />
       );
     });
