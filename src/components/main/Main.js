@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable default-case */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable react/state-in-constructor */
 import { Component } from 'react';
@@ -27,11 +29,21 @@ export default class Main extends Component {
 
     if (prevProps !== this.props || prevState.currentPage !== currentPage) {
       const { request } = this.state;
-      const { currentPage } = this.props;
-      this.searchFilmsByWord(currentPage, `${request}`);
+      const { currentPage, typeOfSorting } = this.props;
 
-      if (!request) {
-        this.clearData();
+      switch (typeOfSorting) {
+        case 'Search':
+          this.searchFilmsByWord(currentPage, `${request}`);
+
+          if (!request) {
+            this.clearData();
+          }
+
+          break;
+        case 'Rate':
+          this.getRatedMovies();
+
+          break;
       }
     }
   }
@@ -73,6 +85,15 @@ export default class Main extends Component {
     }
   }, 500);
 
+  getRatedMovies = () => {
+    const { guestSessionId } = this.props;
+    this.onLoad();
+    this.movieDbService
+      .getRatedFilms(guestSessionId)
+      .then(this.onFilmsLoaded)
+      .catch(this.onError);
+  };
+
   pageChange = (currentPage) => this.setState({ currentPage });
 
   clearData = () => {
@@ -81,6 +102,7 @@ export default class Main extends Component {
 
   render() {
     const { loading, error, data, totalPages, currentPage } = this.state;
+    const { guestSessionId } = this.props;
 
     const pagination = data.length ? (
       <Pagination
@@ -94,10 +116,15 @@ export default class Main extends Component {
     ) : null;
 
     return (
-      <>
-        <MovieListItems loading={loading} error={error} data={data} />
+      <main>
+        <MovieListItems
+          loading={loading}
+          error={error}
+          data={data}
+          guestSessionId={guestSessionId}
+        />
         {pagination}
-      </>
+      </main>
     );
   }
 }

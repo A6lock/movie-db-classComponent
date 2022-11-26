@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/state-in-constructor */
@@ -9,6 +10,7 @@ import { format, parseISO } from 'date-fns';
 import { Rate } from 'antd';
 
 import Ratind from '../rating/Rating';
+import MovieDbService from '../../services/MovieDbService';
 
 import Genres from './Genres';
 import errorPicture from './noPoster.png';
@@ -17,15 +19,26 @@ import './movieListItem.css';
 import './rate.css';
 
 export default class MovieListItem extends Component {
+  movieDbService = new MovieDbService();
+
   state = {
     starsCount: 0,
   };
 
   onChangeStarsCount = (starsCount) => {
     this.setState({ starsCount });
+    this.onChangeRate();
   };
 
-  slisingDescription = () => {
+  onChangeRate = () => {
+    const { starsCount } = this.state;
+    const { id, guestSessionId } = this.props;
+    console.log(guestSessionId);
+
+    this.movieDbService.rateMovie(starsCount, id, guestSessionId);
+  };
+
+  slicingDescription = () => {
     const { description, tittle, genres } = this.props;
 
     const maxSymbols =
@@ -73,7 +86,7 @@ export default class MovieListItem extends Component {
             <Genres genres={genres} />
             <p className="movie-item__description">
               {description.length > 170
-                ? `${this.slisingDescription()}...`
+                ? `${this.slicingDescription()}...`
                 : defaultDescription}
             </p>
             <Rate

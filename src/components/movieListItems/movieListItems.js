@@ -10,7 +10,10 @@
 import { Component } from 'react';
 import { Alert } from 'antd';
 
-import { MovieConsumer } from '../movieDbContext/movieDbContext';
+import {
+  GenresConsumer,
+  GuestSessionConsumer,
+} from '../movieDbContexts/movieDbContext';
 import Spiner from '../spiner/Spiner';
 
 import ItemsView from './ItemsView';
@@ -40,11 +43,19 @@ export default class MovieListItems extends Component {
     const spinner = loading ? <Spiner /> : null;
     const viewContent =
       !loading && !error ? (
-        <MovieConsumer>
-          {(value) => {
-            return <ItemsView data={data} genresArr={value} />;
-          }}
-        </MovieConsumer>
+        <GenresConsumer>
+          {(genres) => (
+            <GuestSessionConsumer>
+              {(guestSessionId) => (
+                <ItemsView
+                  data={data}
+                  genresArr={genres}
+                  guestSessionId={guestSessionId}
+                />
+              )}
+            </GuestSessionConsumer>
+          )}
+        </GenresConsumer>
       ) : null;
 
     // const noResults = !data.length ? <NoResult /> : null;

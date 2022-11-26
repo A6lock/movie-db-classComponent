@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable default-case */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable camelcase */
 import { Component } from 'react';
@@ -6,7 +8,10 @@ import { Tabs, Input } from 'antd';
 import OfflineMessage from '../offlineMessage/OfflineMessage';
 import Main from '../main/Main';
 import MovieDbService from '../../services/MovieDbService';
-import { MovieProvider } from '../movieDbContext/movieDbContext';
+import {
+  GenresProvider,
+  GuestSessionProvider,
+} from '../movieDbContexts/movieDbContext';
 
 import './app.css';
 
@@ -18,6 +23,7 @@ export default class App extends Component {
     request: '',
     genres: null,
     guestSessionId: null,
+    typeOfSorting: 'Search',
   };
 
   componentDidMount() {
@@ -27,6 +33,10 @@ export default class App extends Component {
 
   onChangeRequest = (event) => {
     this.setState({ request: event.target.value });
+  };
+
+  onChangeTypeOfSorting = (tabName) => {
+    this.setState({ typeOfSorting: tabName });
   };
 
   genresLoaded = (response) => {
@@ -46,38 +56,71 @@ export default class App extends Component {
   };
 
   render() {
-    const { request, genres } = this.state;
+    const { request, genres, typeOfSorting, guestSessionId } = this.state;
+
+    let visibleData;
+
+    switch (typeOfSorting) {
+      case 'Search':
+        visibleData = (
+          <div className="app">
+            <div className="app__container">
+              <OfflineMessage />
+              <Input
+                className="search-pannel"
+                placeholder="Type to search"
+                type="search"
+                value={request}
+                onChange={this.onChangeRequest}
+              />
+              <GenresProvider value={genres}>
+                <GuestSessionProvider value={guestSessionId}>
+                  <Main
+                    request={request}
+                    typeOfSorting={typeOfSorting}
+                    guestSessionId={guestSessionId}
+                  />
+                </GuestSessionProvider>
+              </GenresProvider>
+            </div>
+          </div>
+        );
+        break;
+
+      case 'Rate':
+        visibleData = (
+          <div className="app">
+            <div className="app__container">
+              <OfflineMessage />
+              <GenresProvider value={genres}>
+                <GuestSessionProvider value={guestSessionId}>
+                  <Main
+                    request={request}
+                    typeOfSorting={typeOfSorting}
+                    guestSessionId={guestSessionId}
+                  />
+                </GuestSessionProvider>
+              </GenresProvider>
+            </div>
+          </div>
+        );
+        break;
+    }
+
+    const items = [
+      { label: 'Search', key: 'Search', children: visibleData },
+      { label: 'Rate', key: 'Rate', children: visibleData },
+    ];
 
     // console.log(guestSessionId);
 
     return (
-      <Tabs defaultActiveKey="1" centered>
-        <Tabs.TabPane tab="Search" key="1">
-          <div className="app">
-            <div className="app__container">
-              <OfflineMessage />
-              <MovieProvider value={genres}>
-                <Tabs />
-                <Input
-                  placeholder="Type to search"
-                  type="search"
-                  value={request}
-                  onChange={this.onChangeRequest}
-                />
-                <Main request={request} />
-              </MovieProvider>
-            </div>
-          </div>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Rate" key="2">
-          <div className="app">
-            <div className="app__container">
-              <OfflineMessage />
-              <Main request={request} />
-            </div>
-          </div>
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        centered
+        onChange={this.onChangeTypeOfSorting}
+        items={items}
+      />
     );
   }
 }
