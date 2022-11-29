@@ -89,7 +89,9 @@ export default class MovieListItem extends Component {
               <Ratind value={rating.toFixed(1)} />
             </div>
             <span className="movie-item__date">
-              {filmDate ? format(parseISO(filmDate), 'PP') : 'No date'}
+              {filmDate
+                ? format(parseISO(filmDate), 'MMMM dd, yyyy')
+                : 'No date'}
             </span>
             <Genres genres={genres} />
             <p className="movie-item__description">
@@ -101,7 +103,7 @@ export default class MovieListItem extends Component {
               count={10}
               allowHalf="true"
               className="rate-style"
-              value={starsCount || localStorage.getItem(id)}
+              value={localStorage.getItem(id) || starsCount}
               onChange={this.onChangeStarsCount}
             />
           </div>

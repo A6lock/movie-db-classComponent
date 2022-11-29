@@ -43,14 +43,12 @@ export default class Main extends Component {
 
         case 'Rate':
           this.getRatedMovies();
-
           break;
       }
     }
   }
 
   onFilmsLoaded = (filmsData) => {
-    console.log(filmsData);
     this.setState({
       data: filmsData.results,
       loading: false,
@@ -106,6 +104,8 @@ export default class Main extends Component {
   render() {
     const { loading, error, data, totalPages, currentPage } = this.state;
     const { guestSessionId } = this.props;
+
+    console.log(data);
 
     const pagination = data.length ? (
       <Pagination

@@ -3,10 +3,11 @@
 /* eslint-disable react/no-unused-state */
 /* eslint-disable camelcase */
 import { Component } from 'react';
-import { Tabs, Input } from 'antd';
 
 import OfflineMessage from '../offlineMessage/OfflineMessage';
+import Header from '../header/Header';
 import Main from '../main/Main';
+import SearchPanel from '../searchPannel/SearchPanel';
 import MovieDbService from '../../services/MovieDbService';
 import {
   GenresProvider,
@@ -31,8 +32,8 @@ export default class App extends Component {
     this.getSessionId();
   }
 
-  onChangeRequest = (event) => {
-    this.setState({ request: event.target.value });
+  onChangeRequest = (request) => {
+    this.setState({ request });
   };
 
   onChangeTypeOfSorting = (tabName) => {
@@ -58,64 +59,28 @@ export default class App extends Component {
   render() {
     const { request, genres, typeOfSorting, guestSessionId } = this.state;
 
-    const items = [
-      {
-        label: 'Search',
-        key: 'Search',
-        children: (
-          <div className="app">
-            <div className="app__container">
-              <OfflineMessage />
-              <Input
-                className="search-pannel"
-                placeholder="Type to search"
-                type="search"
-                value={request}
-                onChange={this.onChangeRequest}
-              />
-              <GenresProvider value={genres}>
-                <GuestSessionProvider value={guestSessionId}>
-                  <Main
-                    request={request}
-                    typeOfSorting={typeOfSorting}
-                    guestSessionId={guestSessionId}
-                  />
-                </GuestSessionProvider>
-              </GenresProvider>
-            </div>
-          </div>
-        ),
-      },
-      {
-        label: 'Rate',
-        key: 'Rate',
-        children: (
-          <div className="app">
-            <div className="app__container">
-              <OfflineMessage />
-              <GenresProvider value={genres}>
-                <GuestSessionProvider value={guestSessionId}>
-                  <Main
-                    request={request}
-                    typeOfSorting={typeOfSorting}
-                    guestSessionId={guestSessionId}
-                  />
-                </GuestSessionProvider>
-              </GenresProvider>
-            </div>
-          </div>
-        ),
-      },
-    ];
-
     return (
-      <Tabs
-        defaultActiveKey="1"
-        centered
-        onChange={this.onChangeTypeOfSorting}
-        items={items}
-        destroyInactiveTabPane="true"
-      />
+      <div className="app">
+        <div className="app__container">
+          <Header onChangeTypeOfSorting={this.onChangeTypeOfSorting} />
+          <OfflineMessage />
+          {typeOfSorting === 'Search' ? (
+            <SearchPanel
+              onChangeRequest={this.onChangeRequest}
+              inputValue={request}
+            />
+          ) : null}
+          <GenresProvider value={genres}>
+            <GuestSessionProvider value={guestSessionId}>
+              <Main
+                request={request}
+                typeOfSorting={typeOfSorting}
+                guestSessionId={guestSessionId}
+              />
+            </GuestSessionProvider>
+          </GenresProvider>
+        </div>
+      </div>
     );
   }
 }

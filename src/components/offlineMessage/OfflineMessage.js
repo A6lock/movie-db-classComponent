@@ -28,6 +28,7 @@ export default class OfflineMessage extends Component {
         type="warning"
         showIcon
         closable
+        className="offline"
       />
     );
     return offlineMessage;
