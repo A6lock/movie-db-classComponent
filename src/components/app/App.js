@@ -23,7 +23,7 @@ export default class App extends Component {
   state = {
     request: '',
     genres: null,
-    guestSessionId: null,
+    guestSessionId: localStorage.getItem('guestSessionId') || null,
     typeOfSorting: 'Search',
   };
 
@@ -49,7 +49,11 @@ export default class App extends Component {
   };
 
   sessionLoaded = (response) => {
-    this.setState({ guestSessionId: response.guest_session_id });
+    const guestSessionId = response.guest_session_id;
+
+    localStorage.setItem('guestSessionId', `${guestSessionId}`);
+
+    this.setState({ guestSessionId });
   };
 
   getSessionId = () => {

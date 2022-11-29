@@ -11,8 +11,8 @@ export default class Header extends Component {
         key: 'Search',
       },
       {
-        label: 'Rate',
-        key: 'Rate',
+        label: 'Rated',
+        key: 'Rated',
       },
     ];
 

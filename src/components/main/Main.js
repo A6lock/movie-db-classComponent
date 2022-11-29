@@ -41,7 +41,7 @@ export default class Main extends Component {
 
           break;
 
-        case 'Rate':
+        case 'Rated':
           this.getRatedMovies();
           break;
       }
@@ -104,8 +104,6 @@ export default class Main extends Component {
   render() {
     const { loading, error, data, totalPages, currentPage } = this.state;
     const { guestSessionId } = this.props;
-
-    console.log(data);
 
     const pagination = data.length ? (
       <Pagination

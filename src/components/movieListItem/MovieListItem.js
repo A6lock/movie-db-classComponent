@@ -103,7 +103,7 @@ export default class MovieListItem extends Component {
               count={10}
               allowHalf="true"
               className="rate-style"
-              value={localStorage.getItem(id) || starsCount}
+              value={+localStorage.getItem(id) || +starsCount}
               onChange={this.onChangeStarsCount}
             />
           </div>

@@ -58,8 +58,6 @@ export default class MovieListItems extends Component {
         </GenresConsumer>
       ) : null;
 
-    // const noResults = !data.length ? <NoResult /> : null;
-
     return (
       <ul className={ulStyle}>
         {errorMessage}
