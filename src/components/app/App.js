@@ -58,11 +58,11 @@ export default class App extends Component {
   render() {
     const { request, genres, typeOfSorting, guestSessionId } = this.state;
 
-    let visibleData;
-
-    switch (typeOfSorting) {
-      case 'Search':
-        visibleData = (
+    const items = [
+      {
+        label: 'Search',
+        key: 'Search',
+        children: (
           <div className="app">
             <div className="app__container">
               <OfflineMessage />
@@ -84,11 +84,12 @@ export default class App extends Component {
               </GenresProvider>
             </div>
           </div>
-        );
-        break;
-
-      case 'Rate':
-        visibleData = (
+        ),
+      },
+      {
+        label: 'Rate',
+        key: 'Rate',
+        children: (
           <div className="app">
             <div className="app__container">
               <OfflineMessage />
@@ -103,16 +104,9 @@ export default class App extends Component {
               </GenresProvider>
             </div>
           </div>
-        );
-        break;
-    }
-
-    const items = [
-      { label: 'Search', key: 'Search', children: visibleData },
-      { label: 'Rate', key: 'Rate', children: visibleData },
+        ),
+      },
     ];
-
-    // console.log(guestSessionId);
 
     return (
       <Tabs
@@ -120,6 +114,7 @@ export default class App extends Component {
         centered
         onChange={this.onChangeTypeOfSorting}
         items={items}
+        destroyInactiveTabPane="true"
       />
     );
   }

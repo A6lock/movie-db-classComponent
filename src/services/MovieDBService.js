@@ -14,18 +14,14 @@ export default class MovieDbService {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  postResource = async (url, value) => {
-    const res = await fetch(url, {
+  postResource = (url, value) => {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
-      body: JSON.stringify(value),
+      body: JSON.stringify({ value }),
     });
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    }
-    return await res.json();
   };
 
   getGeners = async () => {
@@ -53,9 +49,9 @@ export default class MovieDbService {
     );
   };
 
-  getRatedFilms = async (guestSessionId) => {
+  getRatedFilms = async (guestSessionId, page) => {
     return this.getResource(
-      `${this._apiBase}guest_session/${guestSessionId}/rated/movies?${this._apiKey}&language=en-US&sort_by=created_at.asc`
+      `${this._apiBase}guest_session/${guestSessionId}/rated/movies?${this._apiKey}&page=${page}&language=en-US&sort_by=created_at.asc`
     );
   };
 }

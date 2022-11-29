@@ -29,17 +29,18 @@ export default class Main extends Component {
 
     if (prevProps !== this.props || prevState.currentPage !== currentPage) {
       const { request } = this.state;
-      const { currentPage, typeOfSorting } = this.props;
+      const { typeOfSorting } = this.props;
 
       switch (typeOfSorting) {
         case 'Search':
-          this.searchFilmsByWord(currentPage, `${request}`);
+          this.searchFilmsByWord();
 
           if (!request) {
             this.clearData();
           }
 
           break;
+
         case 'Rate':
           this.getRatedMovies();
 
@@ -49,6 +50,7 @@ export default class Main extends Component {
   }
 
   onFilmsLoaded = (filmsData) => {
+    console.log(filmsData);
     this.setState({
       data: filmsData.results,
       loading: false,
@@ -86,10 +88,11 @@ export default class Main extends Component {
   }, 500);
 
   getRatedMovies = () => {
+    const { currentPage } = this.state;
     const { guestSessionId } = this.props;
     this.onLoad();
     this.movieDbService
-      .getRatedFilms(guestSessionId)
+      .getRatedFilms(guestSessionId, currentPage)
       .then(this.onFilmsLoaded)
       .catch(this.onError);
   };

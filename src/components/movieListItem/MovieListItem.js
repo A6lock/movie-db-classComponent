@@ -25,15 +25,23 @@ export default class MovieListItem extends Component {
     starsCount: 0,
   };
 
+  componentDidUpdate(prevState) {
+    const { starsCount } = this.state;
+
+    if (this.state !== prevState && starsCount > 0) {
+      this.onChangeRate();
+    }
+  }
+
   onChangeStarsCount = (starsCount) => {
     this.setState({ starsCount });
-    this.onChangeRate();
   };
 
   onChangeRate = () => {
     const { starsCount } = this.state;
     const { id, guestSessionId } = this.props;
-    console.log(guestSessionId);
+
+    localStorage.setItem(id, starsCount);
 
     this.movieDbService.rateMovie(starsCount, id, guestSessionId);
   };
@@ -61,7 +69,7 @@ export default class MovieListItem extends Component {
 
   render() {
     const { starsCount } = this.state;
-    const { tittle, filmDate, description, poster, genres, rating } =
+    const { tittle, filmDate, description, poster, genres, rating, id } =
       this.props;
 
     const posterView = poster
@@ -78,7 +86,7 @@ export default class MovieListItem extends Component {
           <div className="movie-item__body">
             <div className="tittle">
               <h3 className="movie-item__tittle">{tittle}</h3>
-              <Ratind value={rating} />
+              <Ratind value={rating.toFixed(1)} />
             </div>
             <span className="movie-item__date">
               {filmDate ? format(parseISO(filmDate), 'PP') : 'No date'}
@@ -93,7 +101,7 @@ export default class MovieListItem extends Component {
               count={10}
               allowHalf="true"
               className="rate-style"
-              value={starsCount}
+              value={starsCount || localStorage.getItem(id)}
               onChange={this.onChangeStarsCount}
             />
           </div>
