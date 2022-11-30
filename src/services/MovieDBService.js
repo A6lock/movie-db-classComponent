@@ -54,4 +54,10 @@ export default class MovieDbService {
       `${this._apiBase}guest_session/${guestSessionId}/rated/movies?${this._apiKey}&page=${page}&language=en-US&sort_by=created_at.asc`
     );
   };
+
+  getTopRatedMovies = async (page) => {
+    return this.getResource(
+      `${this._apiBase}/movie/top_rated/?${this._apiKey}&language=en-US&page=${page}`
+    );
+  };
 }

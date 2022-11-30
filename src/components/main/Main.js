@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable indent */
 /* eslint-disable default-case */
 /* eslint-disable react/no-unused-state */
@@ -22,7 +23,7 @@ export default class Main extends Component {
   };
 
   componentDidMount() {
-    this.uploaded();
+    setTimeout(this.getTopMovies, 500);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -63,10 +64,6 @@ export default class Main extends Component {
     this.setState(() => ({ loading: true }));
   };
 
-  uploaded = () => {
-    this.setState({ loading: false });
-  };
-
   onError = () => {
     this.setState({
       error: true,
@@ -93,6 +90,15 @@ export default class Main extends Component {
     this.onLoad();
     this.movieDbService
       .getRatedFilms(guestSessionId, currentPage)
+      .then(this.onFilmsLoaded)
+      .catch(this.onError);
+  };
+
+  getTopMovies = () => {
+    const { page } = this.state.currentPage;
+    this.movieDbService
+      // eslint-disable-next-line react/destructuring-assignment
+      .getTopRatedMovies(page)
       .then(this.onFilmsLoaded)
       .catch(this.onError);
   };

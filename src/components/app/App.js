@@ -20,7 +20,7 @@ export default class App extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     request: '',
-    genres: null,
+    genres: [],
     guestSessionId: localStorage.getItem('guestSessionId') || null,
     typeOfSorting: 'Search',
   };
