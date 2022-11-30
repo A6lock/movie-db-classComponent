@@ -11,6 +11,7 @@ import Main from '../main/Main';
 import SearchPanel from '../searchPannel/SearchPanel';
 import MovieDbService from '../../services/MovieDbService';
 import { GenresProvider } from '../movieDbContexts/movieDbContext';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import './app.css';
 
@@ -64,24 +65,29 @@ export default class App extends Component {
   render() {
     const { request, genres, typeOfSorting, guestSessionId } = this.state;
 
+    const searchVisible =
+      typeOfSorting === 'Search' ? (
+        <SearchPanel
+          onChangeRequest={this.onChangeRequest}
+          inputValue={request}
+        />
+      ) : null;
+
     return (
       <div className="app">
         <div className="app__container">
-          <Header onChangeTypeOfSorting={this.onChangeTypeOfSorting} />
-          <OfflineMessage />
-          {typeOfSorting === 'Search' ? (
-            <SearchPanel
-              onChangeRequest={this.onChangeRequest}
-              inputValue={request}
-            />
-          ) : null}
-          <GenresProvider value={genres}>
-            <Main
-              request={request}
-              typeOfSorting={typeOfSorting}
-              guestSessionId={guestSessionId}
-            />
-          </GenresProvider>
+          <ErrorBoundary>
+            <Header onChangeTypeOfSorting={this.onChangeTypeOfSorting} />
+            <OfflineMessage />
+            {searchVisible}
+            <GenresProvider value={genres}>
+              <Main
+                request={request}
+                typeOfSorting={typeOfSorting}
+                guestSessionId={guestSessionId}
+              />
+            </GenresProvider>
+          </ErrorBoundary>
         </div>
       </div>
     );

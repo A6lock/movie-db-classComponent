@@ -1,10 +1,15 @@
 /* eslint-disable react/state-in-constructor */
 import { Component } from 'react';
 import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 import './searchPanel.css';
 
 export default class SearchPanel extends Component {
+  static defaultProps = {
+    onChangeRequest: () => {},
+  };
+
   state = {
     inputValue: '',
   };
@@ -38,3 +43,7 @@ export default class SearchPanel extends Component {
     );
   }
 }
+
+SearchPanel.propTypes = {
+  onChangeRequest: PropTypes.func,
+};

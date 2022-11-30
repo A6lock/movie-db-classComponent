@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable indent */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
@@ -9,6 +8,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
 import { Alert } from 'antd';
+import PropTypes from 'prop-types';
 
 import { GenresConsumer } from '../movieDbContexts/movieDbContext';
 import Spiner from '../spiner/Spiner';
@@ -19,6 +19,13 @@ import noResultPicture from './noContentPicture.png';
 import './movieListItems.css';
 
 export default class MovieListItems extends Component {
+  static defaultProps = {
+    loading: false,
+    error: false,
+    data: [],
+    noData: false,
+  };
+
   render() {
     const { loading, error, data, noData } = this.props;
 
@@ -70,6 +77,10 @@ export default class MovieListItems extends Component {
   }
 }
 
-// function NoResult() {
-//  return <h1>The search has not given any results. Try another request.</h1>;
-// }
+MovieListItems.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  data: PropTypes.arrayOf(PropTypes.object),
+  noData: PropTypes.bool,
+};

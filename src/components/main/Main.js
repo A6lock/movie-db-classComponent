@@ -6,11 +6,18 @@
 import { Component } from 'react';
 import { Pagination } from 'antd';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
 
 import MovieListItems from '../movieListItems/movieListItems';
 import MovieDbService from '../../services/MovieDbService';
 
 export default class Main extends Component {
+  static defaultProps = {
+    request: '',
+    typeOfSorting: 'Search',
+    guestSessionId: '',
+  };
+
   movieDbService = new MovieDbService();
 
   state = {
@@ -30,8 +37,7 @@ export default class Main extends Component {
     const { currentPage } = this.state;
 
     if (prevProps !== this.props || prevState.currentPage !== currentPage) {
-      const { request } = this.state;
-      const { typeOfSorting } = this.props;
+      const { typeOfSorting, request } = this.props;
 
       switch (typeOfSorting) {
         case 'Search':
@@ -113,8 +119,6 @@ export default class Main extends Component {
     const { loading, error, data, totalPages, currentPage, noData } =
       this.state;
 
-    const { guestSessionId, request } = this.props;
-
     const pagination = data.length ? (
       <Pagination
         defaultCurrent={currentPage}
@@ -132,8 +136,6 @@ export default class Main extends Component {
           loading={loading}
           error={error}
           data={data}
-          guestSessionId={guestSessionId}
-          request={request}
           noData={noData}
         />
         {pagination}
@@ -141,3 +143,9 @@ export default class Main extends Component {
     );
   }
 }
+
+Main.propTypes = {
+  request: PropTypes.string,
+  typeOfSorting: PropTypes.string,
+  guestSessionId: PropTypes.string,
+};
