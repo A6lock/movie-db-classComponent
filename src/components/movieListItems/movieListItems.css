@@ -11,11 +11,17 @@
 .moveie-list-items {
   background-color: #fff;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
+  grid-template-columns: repeat(2, minmax(245px, 1fr)); 
   grid-column-gap: 51px;
   grid-row-gap: 37px;
   margin-bottom: 37px;
   /*gap: 36px 37px;*/
+}
+
+@media (max-width: 950px){
+  .moveie-list-items {
+    grid-template-columns: repeat(1, minmax(245px, 1fr)); 
+  }
 }
 
 .moveie-list-items--center {
@@ -30,6 +36,11 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+}
+
+.movei-list-items__no-result{
+  width: 70%;
+  height: 70%;
 }
 
 .ant-pagination {

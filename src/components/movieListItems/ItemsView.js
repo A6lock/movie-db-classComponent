@@ -7,7 +7,8 @@ import MovieListItem from '../movieListItem/MovieListItem';
 
 export default class ItemsView extends Component {
   render() {
-    const { data, genresArr, guestSessionId } = this.props;
+    const { data, genresArr } = this.props;
+
     const visibleData = data.map((item) => {
       const {
         id,
@@ -35,7 +36,6 @@ export default class ItemsView extends Component {
           genres={genres}
           rating={vote_average}
           id={id}
-          guestSessionId={guestSessionId}
         />
       );
     });

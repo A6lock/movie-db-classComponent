@@ -1,3 +1,10 @@
 .rate-style{
-  font-size: 16px;
+  font-size: 1rem;
+}
+
+@media (max-width: 950px){
+  .rate-style{
+    display: flex;
+    justify-content: end;
+  }
 }

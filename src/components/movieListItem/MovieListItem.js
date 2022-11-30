@@ -39,11 +39,15 @@ export default class MovieListItem extends Component {
 
   onChangeRate = () => {
     const { starsCount } = this.state;
-    const { id, guestSessionId } = this.props;
+    const { id } = this.props;
 
     localStorage.setItem(id, starsCount);
 
-    this.movieDbService.rateMovie(starsCount, id, guestSessionId);
+    this.movieDbService.rateMovie(
+      starsCount,
+      id,
+      localStorage.getItem('guestSessionId')
+    );
   };
 
   slicingDescription = () => {

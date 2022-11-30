@@ -16,6 +16,7 @@ export default class Main extends Component {
     data: [],
     loading: true,
     error: false,
+    noData: false,
     totalPages: 0,
     currentPage: 1,
   };
@@ -53,6 +54,7 @@ export default class Main extends Component {
       data: filmsData.results,
       loading: false,
       error: false,
+      noData: !(filmsData.results.length > 0),
       totalPages: filmsData.total_pages,
     });
   };
@@ -102,8 +104,10 @@ export default class Main extends Component {
   };
 
   render() {
-    const { loading, error, data, totalPages, currentPage } = this.state;
-    const { guestSessionId } = this.props;
+    const { loading, error, data, totalPages, currentPage, noData } =
+      this.state;
+
+    const { guestSessionId, request } = this.props;
 
     const pagination = data.length ? (
       <Pagination
@@ -123,6 +127,8 @@ export default class Main extends Component {
           error={error}
           data={data}
           guestSessionId={guestSessionId}
+          request={request}
+          noData={noData}
         />
         {pagination}
       </main>

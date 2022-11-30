@@ -10,25 +10,24 @@
 import { Component } from 'react';
 import { Alert } from 'antd';
 
-import {
-  GenresConsumer,
-  GuestSessionConsumer,
-} from '../movieDbContexts/movieDbContext';
+import { GenresConsumer } from '../movieDbContexts/movieDbContext';
 import Spiner from '../spiner/Spiner';
 
 import ItemsView from './ItemsView';
+import noResultPicture from './noContentPicture.png';
 
 import './movieListItems.css';
 
 export default class MovieListItems extends Component {
   render() {
-    const { loading, error, data } = this.props;
+    const { loading, error, data, noData } = this.props;
 
-    const ulStyle = loading
-      ? 'moveie-list-items--center '
-      : error
-      ? 'moveie-list-items--error'
-      : 'moveie-list-items';
+    const ulStyle =
+      loading || !data.length
+        ? 'moveie-list-items--center '
+        : error
+        ? 'moveie-list-items--error'
+        : 'moveie-list-items';
 
     const errorMessage = error ? (
       <Alert
@@ -40,28 +39,31 @@ export default class MovieListItems extends Component {
       />
     ) : null;
 
+    const noResult = (
+      <img
+        src={noResultPicture}
+        className="movei-list-items__no-result"
+        alt="no result"
+      />
+    );
+
     const spinner = loading ? <Spiner /> : null;
-    const viewContent =
+
+    const visibleContent =
       !loading && !error ? (
-        <GenresConsumer>
-          {(genres) => (
-            <GuestSessionConsumer>
-              {(guestSessionId) => (
-                <ItemsView
-                  data={data}
-                  genresArr={genres}
-                  guestSessionId={guestSessionId}
-                />
-              )}
-            </GuestSessionConsumer>
-          )}
-        </GenresConsumer>
+        noData ? (
+          noResult
+        ) : (
+          <GenresConsumer>
+            {(genres) => <ItemsView data={data} genresArr={genres} />}
+          </GenresConsumer>
+        )
       ) : null;
 
     return (
       <ul className={ulStyle}>
         {errorMessage}
-        {viewContent}
+        {visibleContent}
         {spinner}
       </ul>
     );

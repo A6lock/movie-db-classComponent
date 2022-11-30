@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable indent */
 /* eslint-disable default-case */
 /* eslint-disable react/no-unused-state */
@@ -9,10 +10,7 @@ import Header from '../header/Header';
 import Main from '../main/Main';
 import SearchPanel from '../searchPannel/SearchPanel';
 import MovieDbService from '../../services/MovieDbService';
-import {
-  GenresProvider,
-  GuestSessionProvider,
-} from '../movieDbContexts/movieDbContext';
+import { GenresProvider } from '../movieDbContexts/movieDbContext';
 
 import './app.css';
 
@@ -29,7 +27,10 @@ export default class App extends Component {
 
   componentDidMount() {
     this.getGenres();
-    this.getSessionId();
+
+    if (this.state.guestSessionId === null) {
+      this.getSessionId();
+    }
   }
 
   onChangeRequest = (request) => {
@@ -75,13 +76,11 @@ export default class App extends Component {
             />
           ) : null}
           <GenresProvider value={genres}>
-            <GuestSessionProvider value={guestSessionId}>
-              <Main
-                request={request}
-                typeOfSorting={typeOfSorting}
-                guestSessionId={guestSessionId}
-              />
-            </GuestSessionProvider>
+            <Main
+              request={request}
+              typeOfSorting={typeOfSorting}
+              guestSessionId={guestSessionId}
+            />
           </GenresProvider>
         </div>
       </div>
