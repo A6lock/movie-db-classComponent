@@ -1,8 +1,11 @@
 /* eslint-disable no-return-await */
+
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 export default class MovieDbService {
   _apiBase = 'https://api.themoviedb.org/3/';
 
-  _apiKey = 'api_key=cf39818bffaaad23abda4aada5ecc8bc';
+  _apiKey = `api_key=${API_KEY}`;
 
   // eslint-disable-next-line class-methods-use-this
   getResource = async (url) => {
@@ -52,12 +55,6 @@ export default class MovieDbService {
   getRatedFilms = async (guestSessionId, page) => {
     return this.getResource(
       `${this._apiBase}guest_session/${guestSessionId}/rated/movies?${this._apiKey}&page=${page}&language=en-US&sort_by=created_at.asc`
-    );
-  };
-
-  getTopRatedMovies = async (page) => {
-    return this.getResource(
-      `${this._apiBase}/movie/top_rated/?${this._apiKey}&language=en-US&page=${page}`
     );
   };
 }

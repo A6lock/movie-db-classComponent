@@ -4,7 +4,7 @@ import { Component } from 'react';
 export default class ErrorBoundary extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
-    error: false.valueOf,
+    error: false,
   };
 
   componentDidCatch() {

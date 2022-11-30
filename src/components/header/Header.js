@@ -29,6 +29,7 @@ export default class Header extends Component {
             centered
             onChange={onChangeTypeOfSorting}
             items={items}
+            destroyInactiveTabPane="false"
           />
         </nav>
       </header>

@@ -30,7 +30,7 @@ export default class Main extends Component {
   };
 
   componentDidMount() {
-    setTimeout(this.getTopMovies, 500);
+    this.upLoad();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -45,6 +45,7 @@ export default class Main extends Component {
 
           if (!request) {
             this.clearData();
+            this.setState({ noData: false });
           }
 
           break;
@@ -68,6 +69,10 @@ export default class Main extends Component {
 
   onLoad = () => {
     this.setState(() => ({ loading: true }));
+  };
+
+  upLoad = () => {
+    this.setState(() => ({ loading: false }));
   };
 
   onError = () => {
@@ -96,15 +101,6 @@ export default class Main extends Component {
     this.onLoad();
     this.movieDbService
       .getRatedFilms(guestSessionId, currentPage)
-      .then(this.onFilmsLoaded)
-      .catch(this.onError);
-  };
-
-  getTopMovies = () => {
-    const { page } = this.state.currentPage;
-    this.movieDbService
-      // eslint-disable-next-line react/destructuring-assignment
-      .getTopRatedMovies(page)
       .then(this.onFilmsLoaded)
       .catch(this.onError);
   };
