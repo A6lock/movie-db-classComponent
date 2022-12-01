@@ -1,10 +1,6 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/state-in-constructor */
-/* eslint-disable react/require-render-return */
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-/* eslint-disable camelcase */
 import MovieListItem from '../movieListItem/MovieListItem';
 
 export default class ItemsView extends Component {

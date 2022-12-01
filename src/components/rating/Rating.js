@@ -1,7 +1,5 @@
 /* eslint-disable indent */
-/* eslint-disable prettier/prettier */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
 
 import './rating.css';

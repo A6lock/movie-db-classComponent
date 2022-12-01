@@ -1,8 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable indent */
-/* eslint-disable default-case */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable camelcase */
 import { Component } from 'react';
 
 import OfflineMessage from '../offlineMessage/OfflineMessage';
@@ -21,15 +16,18 @@ export default class App extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     request: '',
-    genres: [],
+    genres: null,
     guestSessionId: localStorage.getItem('guestSessionId') || null,
     typeOfSorting: 'Search',
   };
 
   componentDidMount() {
-    this.getGenres();
+    const { guestSessionId, genres } = this.state;
+    if (!genres) {
+      this.getGenres();
+    }
 
-    if (this.state.guestSessionId === null) {
+    if (guestSessionId === null) {
       this.getSessionId();
     }
   }

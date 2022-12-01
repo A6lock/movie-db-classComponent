@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { Tabs } from 'antd';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Header extends Component {
   static defaultProps = {
     onChangeTypeOfSorting: () => {},
@@ -10,6 +9,7 @@ export default class Header extends Component {
 
   render() {
     const { onChangeTypeOfSorting } = this.props;
+
     const items = [
       {
         label: 'Search',
@@ -29,7 +29,6 @@ export default class Header extends Component {
             centered
             onChange={onChangeTypeOfSorting}
             items={items}
-            destroyInactiveTabPane="false"
           />
         </nav>
       </header>

@@ -1,4 +1,3 @@
-/* eslint-disable react/state-in-constructor */
 import { Component } from 'react';
 import { Alert } from 'antd';
 

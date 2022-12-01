@@ -1,10 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/state-in-constructor */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/prefer-stateless-function */
 import { Component } from 'react';
 import { format, parseISO } from 'date-fns';
 import { Rate } from 'antd';
@@ -53,12 +46,19 @@ export default class MovieListItem extends Component {
   slicingDescription = () => {
     const { description, tittle, genres } = this.props;
 
-    const maxSymbols =
-      tittle.length > 22 && genres.length > 3
-        ? 50
-        : tittle.length > 22
-        ? 80
-        : 140;
+    // const maxSymbols =
+    //  tittle.length > 22 && genres.length > 3
+    //    ? 50
+    //    : tittle.length > 22
+    //    ? 80
+    //    : 140;
+
+    let maxSymbols = 140;
+    if (tittle.length > 22 && genres.length > 3) {
+      maxSymbols = 50;
+    } else if (tittle.length > 22) {
+      maxSymbols = 80;
+    }
 
     return description
       .split(' ')

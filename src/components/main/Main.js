@@ -1,8 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable indent */
-/* eslint-disable default-case */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/state-in-constructor */
 import { Component } from 'react';
 import { Pagination } from 'antd';
 import { debounce } from 'lodash';
@@ -39,15 +34,16 @@ export default class Main extends Component {
     if (prevProps !== this.props || prevState.currentPage !== currentPage) {
       const { typeOfSorting, request } = this.props;
 
+      // eslint-disable-next-line default-case
       switch (typeOfSorting) {
         case 'Search':
+          this.clearData();
           this.searchFilmsByWord();
 
           if (!request) {
             this.clearData();
             this.setState({ noData: false });
           }
-
           break;
 
         case 'Rated':
@@ -64,6 +60,7 @@ export default class Main extends Component {
       error: false,
       noData: !(filmsData.results.length > 0),
       totalPages: filmsData.total_pages,
+      currentPage: 1,
     });
   };
 
