@@ -1,11 +1,9 @@
 /* eslint-disable no-return-await */
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
 export default class MovieDbService {
   _apiBase = 'https://api.themoviedb.org/3/';
 
-  _apiKey = `api_key=${API_KEY}`;
+  _apiKey = 'api_key=cf39818bffaaad23abda4aada5ecc8bc';
 
   // eslint-disable-next-line class-methods-use-this
   getResource = async (url) => {
