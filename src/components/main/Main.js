@@ -51,16 +51,18 @@ export default class Main extends Component {
           break;
       }
     }
+    window.scrollTo(0, 0);
   }
 
   onFilmsLoaded = (filmsData) => {
+    const { currentPage } = this.state;
     this.setState({
       data: filmsData.results,
       loading: false,
       error: false,
       noData: !(filmsData.results.length > 0),
       totalPages: filmsData.total_pages,
-      currentPage: 1,
+      currentPage,
     });
   };
 
